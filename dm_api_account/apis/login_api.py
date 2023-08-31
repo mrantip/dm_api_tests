@@ -1,7 +1,7 @@
-import requests
 from requests import Response
-from ..models.login_credentials_model import LoginCredentialsModel
+from ..models import *
 from restclient.restclient import Restclient
+from ..utilities import validate_status_code
 
 
 class LoginApi:
@@ -11,8 +11,14 @@ class LoginApi:
         if headers:
             self.client.session.headers.update(headers)
 
-    def post_v1_account_login(self, json: LoginCredentialsModel, **kwargs) -> Response:
+    def post_v1_account_login(
+            self,
+            json: LoginCredentials,
+            status_code: int = 200,
+            **kwargs
+    ) -> Response | UserEnvelope:
         """
+        :param status_code:
         :param json login_credentials_model
         Authenticate via credentials
         :return:
@@ -22,9 +28,16 @@ class LoginApi:
             json=json.model_dump(by_alias=True, exclude_none=True),
             **kwargs
         )
+        validate_status_code(response, status_code)
+        if response.status_code == 200:
+            return UserEnvelope(**response.json())
         return response
 
-    def delete_v1_account_login(self, **kwargs) -> Response:
+    def delete_v1_account_login(
+            self,
+            status_code: int = 204,
+            **kwargs
+    ) -> Response:
         """
         Logout as current user
         :return:
@@ -33,9 +46,14 @@ class LoginApi:
             path=f"/v1/account/login",
             **kwargs
         )
+        validate_status_code(response, status_code)
         return response
 
-    def delete_v1_account_login_all(self, **kwargs) -> Response:
+    def delete_v1_account_login_all(
+            self,
+            status_code: int = 204,
+            **kwargs
+    ) -> Response:
         """
         Logout from every device
         :return:
@@ -44,4 +62,5 @@ class LoginApi:
             path=f"/v1/account/login/all",
             **kwargs
         )
+        validate_status_code(response, status_code)
         return response
