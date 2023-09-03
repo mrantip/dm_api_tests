@@ -1,5 +1,5 @@
-from services.dm_api_account import DmApiAccount
-from services.mailhog import MailhogApi
+from services.dm_api_account import Facade
+from dm_api_account.generic.helpers.mailhog import MailhogApi
 import structlog
 from dm_api_account.models.registration_model import Registration
 from hamcrest import assert_that, has_properties
@@ -14,7 +14,7 @@ structlog.configure(
 
 def test_put_v1_account_token():
     mailhog = MailhogApi(host='http://5.63.153.31:5025')
-    api = DmApiAccount(host="http://5.63.153.31:5051")
+    api = Facade(host="http://5.63.153.31:5051")
     login = "as_27"
     email = "as_27@mail.ru"
     password = "password_27"
@@ -23,9 +23,9 @@ def test_put_v1_account_token():
         email=email,
         password=password
     )
-    response = api.account.post_v1_account(json=json)
+    response = api.account_api.post_v1_account(json=json)
     token = mailhog.get_token_from_last_email()
-    response = api.account.put_v1_account_token(token=token)
+    response = api.account_api.put_v1_account_token(token=token)
     assert_that(response.resource, has_properties(
         {
             "login": login,
