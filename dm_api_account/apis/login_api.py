@@ -1,7 +1,7 @@
 from requests import Response
 from ..models import *
 from restclient.restclient import Restclient
-from ..utilities import validate_status_code
+from ..utilities import validate_status_code, validate_request_json
 
 
 class LoginApi:
@@ -14,9 +14,8 @@ class LoginApi:
     def post_v1_account_login(
             self,
             json: LoginCredentials,
-            status_code: int = 200,
-            **kwargs
-    ) -> Response | UserEnvelope:
+            status_code: int = 200
+    ) -> Response:
         """
         :param status_code:
         :param json login_credentials_model
@@ -25,12 +24,11 @@ class LoginApi:
         """
         response = self.client.post(
             path=f"/v1/account/login",
-            json=json.model_dump(by_alias=True, exclude_none=True),
-            **kwargs
+            json=validate_request_json(json)
         )
         validate_status_code(response, status_code)
         if response.status_code == 200:
-            return UserEnvelope(**response.json())
+            UserEnvelope(**response.json())
         return response
 
     def delete_v1_account_login(
