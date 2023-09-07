@@ -1,5 +1,7 @@
 from uuid import UUID
 
+from pydantic import StrictStr
+
 from dm_api_account.models import Registration, ChangePassword, ResetPassword
 
 
@@ -40,7 +42,7 @@ class Account:
         )
         return response
 
-    def change_registered_user_password(self, login: str, token: UUID, old_password: str, new_password: str):
+    def change_registered_user_password(self, login: str, token: str, old_password: str, new_password: str):
         # token = self.facade.mailhog.get_token_for_reset_password(login=login)
         response = self.facade.account_api.put_v1_account_password(
             json=ChangePassword(
