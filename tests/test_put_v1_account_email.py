@@ -1,5 +1,4 @@
 from services.dm_api_account import Facade
-from dm_api_account.generic.helpers.mailhog import MailhogApi
 import structlog
 from dm_api_account.models.registration_model import Registration
 from dm_api_account.models.change_email_model import ChangeEmail

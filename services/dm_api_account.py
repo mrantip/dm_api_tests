@@ -1,12 +1,12 @@
 from dm_api_account.apis.account_api import AccountApi
 from dm_api_account.apis.login_api import LoginApi
-from dm_api_account.generic.helpers.login import Login
-from dm_api_account.generic.helpers.mailhog import MailhogApi
-from dm_api_account.generic.helpers.account import Account
+from generic.helpers.login import Login
+from generic.helpers.mailhog import MailhogApi
+from generic.helpers.account import Account
 
 
 class Facade:
-    def __init__(self, host, mailhog_host=None, headers=None):
+    def __init__(self, host: object, mailhog_host: object = None, headers: object = None) -> object:
         self.account_api = AccountApi(host, headers)
         self.login_api = LoginApi(host, headers)
         self.mailhog = MailhogApi()

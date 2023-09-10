@@ -1,10 +1,5 @@
 from services.dm_api_account import Facade
-from dm_api_account.generic.helpers.mailhog import MailhogApi
 import structlog
-from dm_api_account.models.registration_model import Registration
-from dm_api_account.models.login_credentials_model import LoginCredentials
-from hamcrest import assert_that, has_properties
-from dm_api_account.models.user_envelope_model import UserRole
 
 structlog.configure(
     processors=[
