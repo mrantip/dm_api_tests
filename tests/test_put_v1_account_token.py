@@ -1,3 +1,6 @@
+from hamcrest import assert_that, has_properties
+
+from dm_api_account.models.user_envelope_model import UserRole
 from services.dm_api_account import Facade
 import structlog
 
@@ -10,9 +13,9 @@ structlog.configure(
 
 def test_put_v1_account_token():
     api = Facade(host="http://5.63.153.31:5051")
-    login = "as_3"
-    email = "as_3@mail.ru"
-    password = "password_3"
+    login = "as_111"
+    email = "as_111@mail.ru"
+    password = "password_111"
 
     response = api.account.register_new_user(
         login=login,
@@ -21,9 +24,9 @@ def test_put_v1_account_token():
     )
     api.account.activate_registered_user(login=login)
 
-    # assert_that(response.resource, has_properties(
-    #     {
-    #         "login": login,
-    #         "roles": [UserRole.guest, UserRole.player]
-    #     }
-    # ))
+    assert_that(response.resourse, has_properties(
+        {
+            "login": login,
+            "roles": [UserRole.guest, UserRole.player]
+        }
+    ))
